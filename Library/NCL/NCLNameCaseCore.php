@@ -1,6 +1,8 @@
 <?php
 namespace seagullua\NameCaseLib\NCL;
 
+use seagullua\NameCaseLib\NCLNameCaseRu;
+
 /**
  * @license Dual licensed under the MIT or GPL Version 2 licenses.
  * @package NameCaseLib
