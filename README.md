@@ -29,6 +29,8 @@ to the require section of your `composer.json` file and execute `php composer.ph
 
 Change Log
 ------------
+## 0.4.5 (2024-06-18) (@Hnakra)
+- fix class not found
 
 ## 0.4.4 (2024-02-17) (@nazbav)
 - remove version field
