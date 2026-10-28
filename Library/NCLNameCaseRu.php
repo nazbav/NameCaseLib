@@ -226,6 +226,15 @@ class NCLNameCaseRu extends NCLNameCaseCore
                 $this->wordForms($this->workingWord, array('ого', 'ому', 'ого', 'им', 'ом'), 2);
                 $this->Rule(404);
                 return true;
+            } elseif ($this->in($this->Last(2, 1), 'ая')) {
+                $this->wordForms($this->workingWord, array('я', 'ю', 'я', 'ем', 'е'), 1);
+                $this->Rule(406);
+                return true;
+            } elseif ($this->Last(2) == 'ой' and NCLStr::strlen($this->workingWord) > 4) {
+                $instrumental = $this->in($this->Last(3, 1), 'гкхжшчщ') ? 'им' : 'ым';
+                $this->wordForms($this->workingWord, array('ого', 'ому', 'ого', $instrumental, 'ом'), 2);
+                $this->Rule(407);
+                return true;
             } else {
                 $this->makeResultTheSame();
                 $this->Rule(405);
@@ -291,9 +300,13 @@ class NCLNameCaseRu extends NCLNameCaseCore
             $this->wordForms($this->workingWord, array('а', 'у', 'а', 'ом', 'е'));
             $this->Rule(602);
             return true;
-        } elseif ($this->in($this->Last(1), $this->consonant)) {
+        } elseif ($this->in($this->Last(2), array('ов', 'ев', 'ёв', 'ин', 'ын'))) {
             $this->wordForms($this->workingWord, array('а', 'у', 'а', 'ым', 'е'));
             $this->Rule(603);
+            return true;
+        } elseif ($this->in($this->Last(1), $this->consonant)) {
+            $this->wordForms($this->workingWord, array('а', 'у', 'а', 'ом', 'е'));
+            $this->Rule(605);
             return true;
         }
         return false;
@@ -325,9 +338,13 @@ class NCLNameCaseRu extends NCLNameCaseCore
                 $this->Rule(704);
                 return true;
             }
-        } elseif ($this->Last(1) == "я") {
-            $this->wordForms($this->workingWord, array('ой', 'ой', 'ую', 'ой', 'ой'), 2);
+        } elseif ($this->Last(2) == "ия") {
+            $this->wordForms($this->workingWord, array('и', 'и', 'ю', 'ей', 'и'), 1);
             $this->Rule(705);
+            return true;
+        } elseif ($this->Last(1) == "я") {
+            $this->wordForms($this->workingWord, array('и', 'е', 'ю', 'ей', 'е'), 1);
+            $this->Rule(706);
             return true;
         }
         return false;
@@ -384,7 +401,7 @@ class NCLNameCaseRu extends NCLNameCaseCore
     protected function womanRule2()
     {
         if ($this->Last(1) == "я") {
-            if ($this->Last(2, 1) <> "и") {
+            if (NCLStr::strtolower($this->Last(2, 1)) <> "и") {
                 $this->wordForms($this->workingWord, array('и', 'е', 'ю', 'ей', 'е'), 1);
                 $this->Rule(201);
                 return true;
@@ -627,6 +644,12 @@ class NCLNameCaseRu extends NCLNameCaseCore
         if ($this->Last(2) == 'на') {
             $word->setGender(0, 12); // женщина
         }
+        if ($this->Last(4) == 'оглы') {
+            $word->setGender(10, 0); // мужчина
+        }
+        if ($this->Last(4) == 'кызы') {
+            $word->setGender(0, 12); // женщина
+        }
     }
 
     /**
@@ -649,6 +672,10 @@ class NCLNameCaseRu extends NCLNameCaseCore
 
 //если смахивает на отчество
         if ($this->in($this->Last(3), array('вна', 'чна', 'вич', 'ьич'))) {
+            $father += 3;
+        }
+
+        if ($this->in($this->Last(4), array('оглы', 'кызы'))) {
             $father += 3;
         }
 
